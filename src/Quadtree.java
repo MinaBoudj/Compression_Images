@@ -15,12 +15,12 @@ public class Quadtree{
     private int size;
     private int max_lumi;
     private int[][] mat_Nodes;
-    
+
     //constructeur 
     public Quadtree(String FilePath){ //TODO
         //charge l'image PGM et construit le quadtree correspondant
 
-        this.racine = null;
+        //this.racine = null;
     }
 
     //la méthode qui donne la représentation textuelle du quadtree sous forme parenthésée (comme vu en TD2) où
