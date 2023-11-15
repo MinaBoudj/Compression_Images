@@ -4,7 +4,7 @@ public class Principal{
     public static void main(String[] args){
 
         //initialisation d'un objet Quadtree à partir d'un fichier PGM
-        Quadtree quadtree = new Quadtree("amina/ASD3/PROJET/images/boat.pgm");
+        Quadtree quadtree = new Quadtree("../images/boat.pgm");
 
         //affichage du menu interactif
         Scanner scanner = new Scanner(System.in);
