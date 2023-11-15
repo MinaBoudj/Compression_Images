@@ -1,7 +1,8 @@
 public class Quadtree{
-    private Noeud racine;
+    //private Noeud racine;
 
-    private static class Noeud{
+
+    /*private static class Noeud{
         int luminosité;
         Noeud[] fils;
 
@@ -9,10 +10,16 @@ public class Quadtree{
             this.luminosité = luminosité;
             this.fils = new Noeud[4]; //4 fils pour chaque noeud
         }
-    }
+    }*/
+
+    private int size;
+    private int max_lumi;
+    private int[][] mat_Nodes;
+    
     //constructeur 
     public Quadtree(String FilePath){ //TODO
         //charge l'image PGM et construit le quadtree correspondant
+
         this.racine = null;
     }
 

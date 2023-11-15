@@ -4,7 +4,7 @@ public class Principal{
     public static void main(String[] args){
 
         //initialisation d'un objet Quadtree à partir d'un fichier PGM
-        Quadtree quadtree = new Quadtree("../images/boat.pgm");
+        Quadtree quadtree = new Quadtree("pgm_carres/boat.pgm");
 
         //affichage du menu interactif
         Scanner scanner = new Scanner(System.in);
@@ -45,10 +45,10 @@ public class Principal{
                         //le nombre de noeuds du quadtree résultant après la compression choisis
                         //le taux de compression réalisé
                         break;
-                default : System.out.println("ERREUR !");
+                default : System.out.println("Vous avez QUITTER !");
             }
 
-        }while(choice !=0);
+        }while(choice !=6);
     }
 
 
