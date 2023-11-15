@@ -41,6 +41,7 @@ public class Principal{
                         break;
 
                 case 5: //le nombre de noeuds du quadtree initial
+                        //TODO
                         //le nombre de noeuds du quadtree résultant après la compression choisis
                         //le taux de compression réalisé
                         break;
