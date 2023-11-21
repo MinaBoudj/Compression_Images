@@ -111,7 +111,28 @@ public class Quadtree{
     }
 
     //Methode qui génère à l'endroit path un fichier PGM qui correspond au Quadtree
-    public void toPGM(String path){ //TODO
+    public void toPGM(String path) throws FileNotFoundException { //TODO
+        //on va d'abord stoquer les valeurs du quadtree dans une matrice
+        int[][] matrix = new int[this.size][this.size];
+        for(int i = 0; i < this.size; i++){
+            for(int j = 0; j < this.size; j++){
+                matrix[i][j] = this.racine.getValue();
+            }
+        }
+        //on va ensuite creer le fichier PGM
+        PrintWriter file = new PrintWriter(new File(path + ".pgm"));
+        file.println("P2");
+        file.println("#commentaire");
+        file.println(size + " " + size);
+        file.println(max_lumi);
+        for(int i = 0; i < size; i++){
+            for(int j= 0; j<size; j++){
+                file.print(matrix[i][j] + " ");
+            }
+            file.println();
+        }
+
+        file.close();
 
     }
 
