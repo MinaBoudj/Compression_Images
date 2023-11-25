@@ -6,7 +6,9 @@ public class Principal{
         
         try{
                 //initialisation d'un objet Quadtree à partir d'un fichier PGM
-                Quadtree quadtree = new Quadtree("pgm_carres/boat.pgm");
+                Quadtree quadtree = new Quadtree("pgm_carres/test.pgm");
+                System.out.println(" teste de la fonction toString : \n");
+                System.out.println(quadtree.toString());
 
                 //affichage du menu interactif
                 Scanner scanner = new Scanner(System.in);
