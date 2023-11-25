@@ -50,7 +50,6 @@ public class Quadtree{
 
         //lecture du fichier PGM et initialisation de la matrice 
         int[][] mat_Nodes = readPGMFile(FilePath);
-        System.out.println(" size : "+size+ "\n");
         //construction de l'arbre
         racine = buildQuadtree(mat_Nodes, 0, 0, size, size);
 
