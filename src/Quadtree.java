@@ -21,8 +21,8 @@ public class Quadtree{
     public QuadtreeNode buildQuadtree(int[][] matrix, int debLigne, int finLigne, int debCol, int finCol){
         if(debLigne == finLigne && debCol == finCol)
             return new QuadtreeNode(matrix[debLigne][debCol], true);
-        if(debCol-debLigne == 2 && matrix[debLigne][debCol] == matrix[debLigne][debCol+1] && matrix[debLigne][debCol+1] == matrix[debLigne+1][debCol] && matrix[debLigne][debCol+1] == matrix[debLigne+1][debCol+1])
-            return new QuadtreeNode(matrix[debLigne][debCol], true);
+        //if(finLigne-debLigne == finCol-debCol && matrix[debLigne][debCol] == matrix[debLigne][debCol+1] && matrix[debLigne][debCol+1] == matrix[debLigne+1][debCol] && matrix[debLigne][debCol+1] == matrix[debLigne+1][debCol+1])
+            //return new QuadtreeNode(matrix[debLigne][debCol], true);
         
         int milieuLigne = (debLigne+finLigne)/2;
         int milieuCol = (debCol+finCol)/2;
@@ -31,6 +31,10 @@ public class Quadtree{
         QuadtreeNode fils2 = buildQuadtree(matrix, debLigne, milieuLigne, milieuCol+1, finCol);
         QuadtreeNode fils3 = buildQuadtree(matrix, milieuLigne+1, finLigne, milieuCol+1, finCol);
         QuadtreeNode fils4 = buildQuadtree(matrix, milieuLigne+1, finLigne, debCol, milieuCol);
+
+        if(fils1.isLeaf() && fils2.isLeaf() && fils3.isLeaf() && fils4.isLeaf() && fils1.getValue()== fils2.getValue() && 
+            fils1.getValue()==fils3.getValue() &&  fils1.getValue()== fils4.getValue())
+            return new QuadtreeNode(fils1.getValue(), true);
 
         return new QuadtreeNode(0, false,fils1, fils2, fils3, fils4);
     }
@@ -58,14 +62,17 @@ public class Quadtree{
 
     public int getSize(){ return this.size; }
     public int getLumMax(){ return this.max_lumi; }
+    public QuadtreeNode getRacine(){    return this.racine; }
 
 
     //affichage d'un noeud de l'arbre
     public String toString(){
         if(racine == null)
             return"()";
+        else if(racine.isLeaf())
+            return "(" + racine.getValue() + ")";
         else 
-            return racine.toString();
+            return "(("+racine.getFils1().toString()+")" + "("+racine.getFils2().toString()+")" +"("+racine.getFils4().toString()+")"+"("+racine.getFils3().toString()+"))";
     }
 
     //Methode qui génère à l'endroit path un fichier PGM qui correspond au Quadtree

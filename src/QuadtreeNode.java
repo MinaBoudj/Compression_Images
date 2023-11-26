@@ -37,8 +37,9 @@ public class QuadtreeNode {
     public String toString(){
         if(est_feuille == true)
             return " " + this.valeur;
-        else 
-            return "("+ fils1.toString()+ ")("+ fils2.toString()+ ")("+fils3.toString()+")("+fils4.toString()+")";
+        else{ 
+            return fils1.toString() + fils2.toString() + fils3.toString() + fils4.toString();
+        }
     }
 
 

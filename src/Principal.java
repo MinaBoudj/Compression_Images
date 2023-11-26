@@ -9,6 +9,7 @@ public class Principal{
                 Quadtree quadtree = new Quadtree("pgm_carres/test.pgm");
                 System.out.println(" teste de la fonction toString : \n");
                 System.out.println(quadtree.toString());
+                
 
                 //affichage du menu interactif
                 Scanner scanner = new Scanner(System.in);
