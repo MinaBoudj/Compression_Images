@@ -99,9 +99,10 @@ public class Quadtree{
         System.out.println("Fichier PGM généré avec succés !");
     }
 
+    //mettre l'arbre dans une matrice 
     public void fillMatrixFromQuadtree(int[][] matrix, QuadtreeNode noeud, int debLigne, int debCol, int finLigne, int finCol){
         if(noeud != null){
-            if(noeud.isLeaf()){
+            if(noeud.isLeaf()){ //si feuille
                 for (int i = debLigne; i <= finLigne; i++) {
                     for (int j = debCol; j <= finCol; j++) {
                         matrix[i][j] = noeud.getValue();
@@ -112,7 +113,7 @@ public class Quadtree{
                 int milieuLigne = (debLigne+finLigne)/2;
                 int milieuCol = (debCol+finCol)/2;
 
-                fillMatrixFromQuadtree(matrix, noeud.getFils1(), debLigne, debCol, finLigne, finCol);
+                fillMatrixFromQuadtree(matrix, noeud.getFils1(), debLigne, debCol, milieuLigne, milieuCol);
                 fillMatrixFromQuadtree(matrix, noeud.getFils2(), debLigne, milieuCol+1, milieuLigne, finCol);
                 fillMatrixFromQuadtree(matrix, noeud.getFils3(), milieuLigne+1, milieuCol+1, finLigne, finCol);
                 fillMatrixFromQuadtree(matrix, noeud.getFils4(), milieuLigne+1, debCol, finLigne, milieuCol);
