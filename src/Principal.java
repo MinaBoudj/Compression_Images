@@ -2,12 +2,12 @@ import java.util.Scanner;
 import java.io.*;
 
 public class Principal{
-    public static void main(String[] args) throws FileNotFoundException{
+    public static void main(String[] args) throws IOException{
         
         try{
                 //initialisation d'un objet Quadtree à partir d'un fichier PGM
                 Quadtree quadtree = new Quadtree("pgm_carres/test.pgm");
-                System.out.println(" teste de la fonction toString : \n");
+                System.out.println(" teste de la fonction toString : ");
                 System.out.println(quadtree.toString());
                 
 
@@ -19,7 +19,7 @@ public class Principal{
                 System.out.println("1. Choisir une autre image PGM");
                 System.out.println("2. Appliquer la compression Lambda");
                 System.out.println("3. Appliquer la compression Rho");
-                System.out.println("4. Générer le fichier PGM");
+                System.out.println("4. Générer le fichier PGM dans le répertoire courant");
                 System.out.println("5. Afficher les statistiques de compression ");
                 System.out.println("6. QUITTER");
 
@@ -40,9 +40,9 @@ public class Principal{
                                 quadtree.compressRho(percentage);
                                 break;
 
-                        case 4: System.out.println("Entrer le chemin de sortie du fichier PGM : ");
-                                String outputFilePath = scanner.next();
-                                quadtree.toPGM(outputFilePath);
+                        case 4: //System.out.println("Entrer le chemin de sortie du fichier PGM : ");
+                                //String outputFilePath = scanner.next();
+                                quadtree.toPGM("pgm_carres/testToPGM.pgm");
                                 break;
 
                         case 5: //le nombre de noeuds du quadtree initial

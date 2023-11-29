@@ -76,63 +76,48 @@ public class Quadtree{
     }
 
     //Methode qui génère à l'endroit path un fichier PGM qui correspond au Quadtree
-    public void toPGM(String path) throws FileNotFoundException { //TODO
+    public void toPGM(String path) throws IOException { //TODO
         //on va d'abord stoquer les valeurs du quadtree dans une matrice
         //ne pas stoquer la valeur de la racine qui ne correspond à aucune luminosité
         int[][] matrix = new int[this.size][this.size];
-        int i = 0;
-        int j = 0;
-        //matrix = buildMatrix(this, matrix, i, j);
+        fillMatrixFromQuadtree(matrix, this.racine, 0, 0, this.size-1, this.size-1);
 
+        //Ensuite ecrire la matrice dans le fichier pgm
+        try(BufferedWriter ecrire = new BufferedWriter(new FileWriter(path))){
+            ecrire.write("P2\n");
+            ecrire.write("#generation du pgm\n");
+            ecrire.write(this.size + " " + this.size + "\n");
+            ecrire.write(this.max_lumi + "\n");
 
-
-
-
-
-        /*for(int i = 0; i < this.size; i++){
-            for(int j = 0; j < this.size; j++){
-                matrix[i][j] = this.racine.getValue();    
+            for(int i=0; i<this.size; i++){
+                for(int j=0; j<this.size; j++){
+                    ecrire.write(matrix[i][j] + " ");
+                }
+                ecrire.write("\n");
             }
         }
-
-        //on va ensuite creer le fichier PGM
-        PrintWriter file = new PrintWriter(new File(path + ".pgm"));
-        file.println("P2");
-        file.println("#commentaire");
-        file.println(size + " " + size);
-        file.println(max_lumi);
-        for(int i = 0; i < size; i++){
-            for(int j= 0; j<size; j++){
-                file.print(matrix[i][j] + " ");
-            }
-            file.println();
-        }
-
-        file.close();*/
-
+        System.out.println("Fichier PGM généré avec succés !");
     }
 
-    public int[][] buildMatrix(QuadtreeNode quadtree, int[][] matrix, int i, int j){
-       /* if(quadtree == null )
-            return matrix;
-        else if(quadtree.getFils1()!= null){
-            return buildMatrix(quadtree.getFils1(), matrix, i, j);
-        }else if(quadtree.getFils2() != null){
-            return buildMatrix(quadtree.getFils2(), matrix, i, j);
-        }else if(quadtree.getFils3() != null){
-            return buildMatrix(quadtree.getFils3(), matrix, i, j);
-        }else if(quadtree.getFils4() != null){
-            return buildMatrix(quadtree.getFils4(), matrix, i, j);
-        }else{
-            matrix[i][j] = quadtree.getValue();
-                j += 1;
-            else{
-                i +=1;
-                j = 0;
+    public void fillMatrixFromQuadtree(int[][] matrix, QuadtreeNode noeud, int debLigne, int debCol, int finLigne, int finCol){
+        if(noeud != null){
+            if(noeud.isLeaf()){
+                for (int i = debLigne; i <= finLigne; i++) {
+                    for (int j = debCol; j <= finCol; j++) {
+                        matrix[i][j] = noeud.getValue();
+                    }
+                }
+            }else{
+
+                int milieuLigne = (debLigne+finLigne)/2;
+                int milieuCol = (debCol+finCol)/2;
+
+                fillMatrixFromQuadtree(matrix, noeud.getFils1(), debLigne, debCol, finLigne, finCol);
+                fillMatrixFromQuadtree(matrix, noeud.getFils2(), debLigne, milieuCol+1, milieuLigne, finCol);
+                fillMatrixFromQuadtree(matrix, noeud.getFils3(), milieuLigne+1, milieuCol+1, finLigne, finCol);
+                fillMatrixFromQuadtree(matrix, noeud.getFils4(), milieuLigne+1, debCol, finLigne, milieuCol);
             }
-            return matrix;
-        }*/
-        return matrix;
+        }
     }
 
     //Methode qui compresse le Quadtree selon la premiere technique 2.3.1
