@@ -33,6 +33,23 @@ public class QuadtreeNode {
 
     public void setValue(int val){ this.valeur = val; }
     public void setIsLeaf(boolean newVal) { this.est_feuille = newVal; }
+    public void setFils1(QuadtreeNode fils){ this.fils1 = fils; }
+    public void setFils2(QuadtreeNode fils){ this.fils2  = fils; }
+    public void setFils3(QuadtreeNode fils){ this.fils3 = fils; }
+    public void setFils4(QuadtreeNode fils){ this.fils4 = fils; }
+
+    public QuadtreeNode getFils(int i){
+        if(i==1)
+            return this.fils1;
+        else if(i==2)
+            return this.fils2;
+            else if(i==3)
+                return this.fils3;
+                else if(i==4)
+                    return this.fils4;
+                    else 
+                        return null;
+    }
 
     public String toString(){
         if(est_feuille == true)
