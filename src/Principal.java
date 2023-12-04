@@ -34,7 +34,7 @@ public class Principal{
                                                 break;
 
                                         case 2: //quadtree.compressLambda();
-                                                Quadtree quadtreeCompress = quadtree.effeuillageComplet();
+                                                Quadtree quadtreeCompress = quadtree.compressLambda();
                                                 quadtreeCompress.toPGM("pgm_carres/testCompressLambda.pgm");
                                                 break;
 

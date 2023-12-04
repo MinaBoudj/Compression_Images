@@ -51,6 +51,27 @@ public class QuadtreeNode {
                         return null;
     }
 
+    //methode qui teste si le noeud courant est une brindille
+    //une brindille : si le noeud n'est pas une feuille mais que ces 4 fils sont des feuilles
+    public boolean isBrindille(){
+        if(!this.est_feuille && this.fils1.isLeaf() && this.fils2.isLeaf() && 
+            this.fils3.isLeaf() && this.fils4.isLeaf())
+            return true;
+        else 
+            return false;
+    }
+
+    //methode qui vérifie si les 4 fils sont des feuilles et sont egaux
+    public boolean allCompressedTreeEqual(){
+        if(this.fils1.isLeaf() && this.fils2.isLeaf() && this.fils3.isLeaf() &&
+        this.fils4.isLeaf() && this.fils1.getValue() == this.fils2.getValue() &&
+        this.fils1.getValue() == this.fils3.getValue() &&
+        this.fils1.getValue() == this.fils4.getValue())
+            return true;
+        else
+            return false;
+    }
+
     public String toString(){
         if(est_feuille == true)
             return " " + this.valeur;

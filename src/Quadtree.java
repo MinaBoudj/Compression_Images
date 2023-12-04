@@ -9,9 +9,9 @@ public class Quadtree{
     private QuadtreeNode racine;
 
     //constructeur 
-    public Quadtree(int size){
-        this.racine = null;
-        this.size = size ;
+    public Quadtree(QuadtreeNode racine, int size){
+        this.racine = racine;
+        this.size = size;
         this.max_lumi = 0;
     }
 
@@ -129,52 +129,55 @@ public class Quadtree{
     }
 
     //Methode qui compresse le Quadtree selon la premiere technique 2.3.1
-    public void compressLambda(){ 
-        compressBrindille(this.racine);
-    }
-
-    //methode pour compresser une brindille
-    private void compressBrindille(QuadtreeNode node){
-        if(node != null && !node.isLeaf()){ 
-            //vérifier si les fils sont des brindilles (feuilles ayant le même parent)
-            if(node.getFils1().isLeaf() && node.getFils2().isLeaf() && node.getFils3().isLeaf() && node.getFils4().isLeaf()){
-                //calculer la moyenne logarthmique de luminosite Λ
-                double SumLambda = 0.0;
-                for(int i=1; i<=4; i++){
-                    double y_i = node.getFils(i).getValue();
-                    SumLambda += Math.log(0.1 + y_i);
-                }
-                double Λ = Math.exp(0.25*SumLambda);
-                //remplacer la brindille par une feuille de luminosité round(Λ)
-                int compressedValue = (int)Math.round(Λ);
-                node.setIsLeaf(true);
-                node.setValue(compressedValue);
-                node.setFils1(null);
-                node.setFils2(null);
-                node.setFils3(null);
-                node.setFils4(null);
-            }else{
-                //appliquer la compression lambda sur les fils
-                compressBrindille(node.getFils1());
-                compressBrindille(node.getFils2());
-                compressBrindille(node.getFils3());
-                compressBrindille(node.getFils4());
-            }
+    public Quadtree compressLambda(){ 
+        //cloner l'arbre initial
+        QuadtreeNode copie = cloneTree(this.racine);
+        Quadtree compressQuad = new Quadtree(copie, size);
+        if(compressQuad.racine.isLeaf())
+            return new Quadtree(copie, 1);
+        else if(compressQuad.racine.isBrindille()){
+                int compressedValue = compressBrindille(copie);
+                return new Quadtree(new QuadtreeNode(compressedValue,true), 1);
+        }else{
+            compressQuad.racine.setFils1(compressLambdaNode(compressQuad.racine.getFils1()));
+            compressQuad.racine.setFils2(compressLambdaNode(compressQuad.racine.getFils2()));
+            compressQuad.racine.setFils3(compressLambdaNode(compressQuad.racine.getFils3()));
+            compressQuad.racine.setFils4(compressLambdaNode(compressQuad.racine.getFils4()));
+            return compressQuad;
         }
     }
 
-    public Quadtree effeuillageComplet(){
-        //cloner l'arbre d'origine pour ne pas le modifier directement
-        Quadtree compressedTree = new Quadtree(this.size);
-        QuadtreeNode rootCopy = cloneTree(this.racine);
+    private QuadtreeNode compressLambdaNode(QuadtreeNode node){
+        if(node.isLeaf()){//une feuille
+            return node;
+        }else if(node.isBrindille()){ //une brindille donc on compresse
+                int compressedValue = compressBrindille(node);
+                return new QuadtreeNode(compressedValue, true);
+        }else{//un noeud interne
+                node.setFils1(compressLambdaNode(node.getFils1()));
+                node.setFils2(compressLambdaNode(node.getFils2()));
+                node.setFils3(compressLambdaNode(node.getFils3()));
+                node.setFils4(compressLambdaNode(node.getFils4()));
+                if(node.allCompressedTreeEqual()){
+                    QuadtreeNode newNode = new QuadtreeNode(node.getFils1().getValue(), true);
+                    return  newNode;
+                }else
+                    return node;
+            }
+        
+    }
 
-        //compresser la copie de la racine
-        compressBrindille(rootCopy);
-
-        //definir la copie de la racine comme racine de la copie de l'arbre
-        compressedTree.setRacine(rootCopy);
-
-        return compressedTree;
+    //methode pour compresser une brindille
+    private int compressBrindille(QuadtreeNode node){
+        //calculer la moyenne logarthmique de luminosite Λ
+        double SumLambda = 0.0;
+        for(int i=1; i<=4; i++){
+            double y_i = node.getFils(i).getValue();
+            SumLambda += Math.log(0.1 + y_i);
+        }
+        double Λ = Math.exp(0.25*SumLambda);
+        int compressedValue = (int)Math.round(Λ);
+        return compressedValue;
     }
 
     //methode pour cloner un arbre 
@@ -195,7 +198,7 @@ public class Quadtree{
 
     }
 
-
+    //nb noeud du quadtree
 
 
 
