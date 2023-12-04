@@ -36,6 +36,7 @@ public class Principal{
                                         case 2: //quadtree.compressLambda();
                                                 Quadtree quadtreeCompress = quadtree.compressLambda();
                                                 quadtreeCompress.toPGM("pgm_carres/testCompressLambda.pgm");
+                                                System.out.println(quadtreeCompress.toString());
                                                 break;
 
                                         case 3: System.out.println("Entrer la valeur du pourcentage de compression Rho : ");

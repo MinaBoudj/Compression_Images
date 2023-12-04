@@ -132,7 +132,7 @@ public class Quadtree{
     public Quadtree compressLambda(){ 
         //cloner l'arbre initial
         QuadtreeNode copie = cloneTree(this.racine);
-        Quadtree compressQuad = new Quadtree(copie, size);
+        Quadtree compressQuad = new Quadtree(copie, this.size/2);
         if(compressQuad.racine.isLeaf())
             return new Quadtree(copie, 1);
         else if(compressQuad.racine.isBrindille()){
@@ -143,7 +143,11 @@ public class Quadtree{
             compressQuad.racine.setFils2(compressLambdaNode(compressQuad.racine.getFils2()));
             compressQuad.racine.setFils3(compressLambdaNode(compressQuad.racine.getFils3()));
             compressQuad.racine.setFils4(compressLambdaNode(compressQuad.racine.getFils4()));
-            return compressQuad;
+            if(compressQuad.racine.allCompressedTreeEqual()){
+                    QuadtreeNode newNode = new QuadtreeNode(compressQuad.racine.getFils1().getValue(), true);
+                    return  new Quadtree(newNode, this.size);
+            }else
+                return compressQuad;
         }
     }
 
@@ -164,7 +168,6 @@ public class Quadtree{
                 }else
                     return node;
             }
-        
     }
 
     //methode pour compresser une brindille
