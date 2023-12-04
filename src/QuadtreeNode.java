@@ -38,6 +38,7 @@ public class QuadtreeNode {
     public void setFils3(QuadtreeNode fils){ this.fils3 = fils; }
     public void setFils4(QuadtreeNode fils){ this.fils4 = fils; }
 
+    //récupere le fils i 
     public QuadtreeNode getFils(int i){
         if(i==1)
             return this.fils1;
@@ -72,6 +73,23 @@ public class QuadtreeNode {
             return false;
     }
 
+    //compter le nombre de noeud 
+    public int countNodes(){
+        if(this == null)
+            return 0;
+        else if(this.est_feuille)//une feuille
+            return 1;
+        else{
+            int cptNode = 1;
+            cptNode += this.fils1.countNodes(); 
+            cptNode += this.fils2.countNodes();
+            cptNode += this.fils3.countNodes();
+            cptNode += this.fils4.countNodes();
+            return cptNode;
+        }
+    }
+
+    //methode d'affichage des valeurs du noeud
     public String toString(){
         if(est_feuille == true)
             return " " + this.valeur;

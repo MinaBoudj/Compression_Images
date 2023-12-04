@@ -9,10 +9,10 @@ public class Quadtree{
     private QuadtreeNode racine;
 
     //constructeur 
-    public Quadtree(QuadtreeNode racine, int size){
+    public Quadtree(QuadtreeNode racine, int size, int max_lumi){
         this.racine = racine;
         this.size = size;
-        this.max_lumi = 0;
+        this.max_lumi = max_lumi;
     }
 
     //charge l'image PGM et construit le quadtree correspondant
@@ -132,12 +132,12 @@ public class Quadtree{
     public Quadtree compressLambda(){ 
         //cloner l'arbre initial
         QuadtreeNode copie = cloneTree(this.racine);
-        Quadtree compressQuad = new Quadtree(copie, this.size/2);
+        Quadtree compressQuad = new Quadtree(copie, this.size/2, this.max_lumi);
         if(compressQuad.racine.isLeaf())
-            return new Quadtree(copie, 1);
+            return new Quadtree(copie, 1, max_lumi);
         else if(compressQuad.racine.isBrindille()){
                 int compressedValue = compressBrindille(copie);
-                return new Quadtree(new QuadtreeNode(compressedValue,true), 1);
+                return new Quadtree(new QuadtreeNode(compressedValue,true), 1, this.max_lumi);
         }else{
             compressQuad.racine.setFils1(compressLambdaNode(compressQuad.racine.getFils1()));
             compressQuad.racine.setFils2(compressLambdaNode(compressQuad.racine.getFils2()));
@@ -145,7 +145,7 @@ public class Quadtree{
             compressQuad.racine.setFils4(compressLambdaNode(compressQuad.racine.getFils4()));
             if(compressQuad.racine.allCompressedTreeEqual()){
                     QuadtreeNode newNode = new QuadtreeNode(compressQuad.racine.getFils1().getValue(), true);
-                    return  new Quadtree(newNode, this.size);
+                    return  new Quadtree(newNode, this.size, max_lumi);
             }else
                 return compressQuad;
         }
@@ -201,7 +201,21 @@ public class Quadtree{
 
     }
 
-    //nb noeud du quadtree
+    //Calculer le nombre de noeud du quadtree
+    public int countNodes(){
+        if(this.racine == null)
+            return 0;
+        else if(this.racine.isLeaf())//une feuille
+                return 1;
+            else{
+                int cpt = 1;
+                cpt += racine.getFils1().countNodes();
+                cpt += racine.getFils2().countNodes();
+                cpt += racine.getFils3().countNodes();
+                cpt += racine.getFils4().countNodes();
+                return cpt;
+            }
+    }
 
 
 

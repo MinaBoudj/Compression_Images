@@ -10,6 +10,7 @@ public class Principal{
                         Quadtree quadtree = new Quadtree("pgm_carres/test.pgm");
                         System.out.println(" teste de la fonction toString : ");
                         System.out.println(quadtree.toString());
+                        System.out.println("Le nombre de noeud initiale : "+quadtree.countNodes());
                 
 
                         //affichage du menu interactif
@@ -37,6 +38,7 @@ public class Principal{
                                                 Quadtree quadtreeCompress = quadtree.compressLambda();
                                                 quadtreeCompress.toPGM("pgm_carres/testCompressLambda.pgm");
                                                 System.out.println(quadtreeCompress.toString());
+                                                System.out.println("Le nombre de noeud après compression Lambda : "+quadtreeCompress.countNodes());
                                                 break;
 
                                         case 3: System.out.println("Entrer la valeur du pourcentage de compression Rho : ");
