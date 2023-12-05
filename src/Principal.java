@@ -9,10 +9,13 @@ public class Principal{
                         //initialisation d'un objet Quadtree à partir d'un fichier PGM
                         Quadtree quadtree = new Quadtree("pgm_carres/test.pgm");
                         System.out.println(" teste de la fonction toString : ");
-                        System.out.println(quadtree.toString());
+                        // Écriture dans le fichier texte
+                        try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"))) {
+                                writer.write(quadtree.toString());
+                        } catch (IOException e) {
+                                e.printStackTrace();
+                        }
                         System.out.println("Le nombre de noeud initiale : "+quadtree.countNodes());
-                
-
                         //affichage du menu interactif
                         Scanner scanner = new Scanner(System.in);
                         int choice;
@@ -43,8 +46,9 @@ public class Principal{
 
                                         case 3: System.out.println("Entrer la valeur du pourcentage de compression Rho : ");
                                                 int percentage = scanner.nextInt();
-                                                quadtree.compressRho(percentage);
-                                                quadtree.toPGM("pgm_carres/testCompressRho.pgm");
+                                                Quadtree compressQuad = quadtree.compressRho(percentage);
+                                                compressQuad.toPGM("pgm_carres/testCompressRho.pgm");
+                                                System.out.println("Le nombre de noeud aprés compression RHo : "+compressQuad.countNodes());
                                                 break;
 
                                         case 4: //System.out.println("Entrer le chemin de sortie du fichier PGM : ");
@@ -53,8 +57,8 @@ public class Principal{
                                                 break;
 
                                         case 5: //le nombre de noeuds du quadtree initial
+                                                System.out.println("Le nombre de noeud initiale : "+quadtree.countNodes());
                                                 //TODO
-                                                //le nombre de noeuds du quadtree résultant après la compression choisis
                                                 //le taux de compression réalisé
                                                 break;
                                         default : System.out.println("Vous avez QUITTER !");

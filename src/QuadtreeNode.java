@@ -89,13 +89,15 @@ public class QuadtreeNode {
         }
     }
 
+
     //methode d'affichage des valeurs du noeud
     public String toString(){
         if(est_feuille == true)
-            return " " + this.valeur;
-        else{ 
-            return fils1.toString() + fils2.toString() + fils3.toString() + fils4.toString();
-        }
+            return "(" + this.valeur + ")";
+        else if(isBrindille())
+                return "(" + fils1.getValue() + " " + fils2.getValue() + " " + fils3.getValue() + " " + fils4.getValue()+ ")";
+            else 
+                return fils1.toString() + fils2.toString() + fils3.toString() + fils4.toString();
     }
 
 

@@ -1,5 +1,10 @@
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Scanner;
+
 public class Quadtree{
 
 
@@ -79,7 +84,7 @@ public class Quadtree{
         else if(racine.isLeaf())
             return "(" + racine.getValue() + ")";
         else 
-            return "(("+racine.getFils1().toString()+")" + "("+racine.getFils2().toString()+")" +"("+racine.getFils4().toString()+")"+"("+racine.getFils3().toString()+"))";
+            return "("+racine.getFils1().toString()+racine.getFils2().toString()+ racine.getFils4().toString() + racine.getFils3().toString()+")";
     }
 
     //Methode qui génère à l'endroit path un fichier PGM qui correspond au Quadtree
@@ -136,7 +141,7 @@ public class Quadtree{
         if(compressQuad.racine.isLeaf())
             return new Quadtree(copie, 1, max_lumi);
         else if(compressQuad.racine.isBrindille()){
-                int compressedValue = compressBrindille(copie);
+                int compressedValue = mayenneLogarithmique(copie);
                 return new Quadtree(new QuadtreeNode(compressedValue,true), 1, this.max_lumi);
         }else{
             compressQuad.racine.setFils1(compressLambdaNode(compressQuad.racine.getFils1()));
@@ -155,7 +160,7 @@ public class Quadtree{
         if(node.isLeaf()){//une feuille
             return node;
         }else if(node.isBrindille()){ //une brindille donc on compresse
-                int compressedValue = compressBrindille(node);
+                int compressedValue = mayenneLogarithmique(node);
                 return new QuadtreeNode(compressedValue, true);
         }else{//un noeud interne
                 node.setFils1(compressLambdaNode(node.getFils1()));
@@ -171,7 +176,7 @@ public class Quadtree{
     }
 
     //methode pour compresser une brindille
-    private int compressBrindille(QuadtreeNode node){
+    private int mayenneLogarithmique(QuadtreeNode node){
         //calculer la moyenne logarthmique de luminosite Λ
         double SumLambda = 0.0;
         for(int i=1; i<=4; i++){
@@ -196,9 +201,72 @@ public class Quadtree{
     }
     
 
-    //Methode qui compresse le Quadtree selon la seconde technique 2.3.2
-    public void compressRho(int percentage){ //TODO
+    public Quadtree compressRho(int rho) {
+        int inialNode = countNodes();
+        //copie de l'arbre
+        QuadtreeNode compressQuadtree = cloneTree(racine);
 
+        // Obtenez la liste des brindilles et de leurs écarts
+        List<Double> Ecarts = findEcarts(this.racine);
+
+        // Triez la liste par ordre croissant d'écart
+        Collections.sort(Ecarts);
+        
+        //compresser si tauxCompression > p%
+        double tauxCompress = compressQuadtree.countNodes()/inialNode;
+        while(tauxCompress > rho){
+            // Appliquez la compression uniquement sur le nœud avec le plus petit écart
+            if (!Ecarts.isEmpty()) {
+                double petitEcart = Ecarts.get(0);
+                //chercher la brindille qui correspond à cette ecart la
+                //stoquer le parent 
+                QuadtreeNode parent = compressQuadtree;
+                //compresser la brindille
+                
+                //si le parent deviens une brindille il peut etre compresser s'il est plus petit que petitEcart
+                if (parent.isBrindille()) {
+                    double ecartParent = calculateCompressionImpcat(parent);
+                    if (ecartParent < petitEcart) {
+                        parent.setIsLeaf(true);
+                        parent.setValue(mayenneLogarithmique(parent));
+                    }
+                }
+            }
+            tauxCompress = compressQuadtree.countNodes()/inialNode;
+        }
+        return new Quadtree(compressQuadtree, this.size, this.max_lumi);
+    }
+
+    // Modifiez la méthode findBrindilles pour renvoyer une liste de BrindilleAvecEcart
+    private List<Double> findEcarts(QuadtreeNode node) {
+        List<Double> brindillesAvecEcarts = new ArrayList<>();
+        findEcartsRecursive(node, brindillesAvecEcarts);
+        return brindillesAvecEcarts;
+    }
+
+    private void findEcartsRecursive(QuadtreeNode node, List<Double> Ecarts) {
+        if (node != null && node.isBrindille()) {
+            double ecart = calculateCompressionImpcat(node);
+            Ecarts.add(ecart);
+        } else if (node != null && !node.isLeaf()) {
+            findEcartsRecursive(node.getFils1(), Ecarts);
+            findEcartsRecursive(node.getFils2(), Ecarts);
+            findEcartsRecursive(node.getFils3(), Ecarts);
+            findEcartsRecursive(node.getFils4(), Ecarts);
+        }
+    }
+
+    //precondition node est une brindille
+    private double calculateCompressionImpcat(QuadtreeNode node){
+        double maxEcart = Double.MIN_VALUE;
+        double Λ = mayenneLogarithmique(node);
+
+        for(int i=1; i<=4; i++){
+            double lambda_i = node.getFils(i).getValue();
+            double ecart = Math.abs(Λ-lambda_i);
+            maxEcart = Math.max(maxEcart, ecart);
+        }
+        return maxEcart;
     }
 
     //Calculer le nombre de noeud du quadtree
@@ -216,7 +284,6 @@ public class Quadtree{
                 return cpt;
             }
     }
-
 
 
     
