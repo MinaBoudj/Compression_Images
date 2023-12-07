@@ -122,7 +122,6 @@ public class Quadtree{
                     }
                 }
             }else{
-
                 int milieuLigne = (debLigne+finLigne)/2;
                 int milieuCol = (debCol+finCol)/2;
 

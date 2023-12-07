@@ -7,6 +7,7 @@ public class Principal{
         if(args.length == 0){
                 try{
                         //initialisation d'un objet Quadtree à partir d'un fichier PGM
+                        String image = "test.pgm";
                         Quadtree quadtree = new Quadtree("pgm_carres/test.pgm");
                         Quadtree quadtreeCompressLambda = new Quadtree(quadtree.cloneTree(quadtree.getRacine()), quadtree.getSize(), quadtree.getLumMax());
                         System.out.println(" teste de la fonction toString !! ");
@@ -63,9 +64,11 @@ public class Principal{
                                                 quadtree.toPGM("pgm_carres/testToPGM.pgm");
                                                 break;
 
-                                        case 5: //le nombre de noeuds du quadtree initial
+                                        case 5: 
+                                                System.out.println("----- Staistiques sur l'image "+ image +" -----");
                                                 System.out.println("Le nombre de noeud initiale : "+quadtree.countNodes());
-                                                //TODO
+                                                System.out.println("Le nombre de noeud après compression Lambda : "+quadtreeCompressLambda.countNodes());
+                                                System.out.println("Le nombre de noeud après compression Rho : ");
                                                 //le taux de compression réalisé
                                                 break;
                                         default : System.out.println("Vous avez QUITTER !");
