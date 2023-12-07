@@ -8,9 +8,10 @@ public class Principal{
                 try{
                         //initialisation d'un objet Quadtree à partir d'un fichier PGM
                         Quadtree quadtree = new Quadtree("pgm_carres/test.pgm");
-                        System.out.println(" teste de la fonction toString : ");
+                        Quadtree quadtreeCompressLambda = new Quadtree(quadtree.cloneTree(quadtree.getRacine()), quadtree.getSize(), quadtree.getLumMax());
+                        System.out.println(" teste de la fonction toString !! ");
                         // Écriture dans le fichier texte
-                        try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"))) {
+                        try (BufferedWriter writer = new BufferedWriter(new FileWriter("output/toString.txt"))) {
                                 writer.write(quadtree.toString());
                         } catch (IOException e) {
                                 e.printStackTrace();
@@ -37,18 +38,24 @@ public class Principal{
                                                 quadtree = new Quadtree(newImagePath);
                                                 break;
 
-                                        case 2: //quadtree.compressLambda();
-                                                Quadtree quadtreeCompress = quadtree.compressLambda();
-                                                quadtreeCompress.toPGM("pgm_carres/testCompressLambda.pgm");
-                                                System.out.println(quadtreeCompress.toString());
-                                                System.out.println("Le nombre de noeud après compression Lambda : "+quadtreeCompress.countNodes());
+                                        case 2: 
+                                                quadtreeCompressLambda.compressLambda();
+                                                quadtreeCompressLambda.toPGM("pgm_carres/testCompressLambda.pgm");
+                                                // Écriture dans le fichier texte
+                                                try (BufferedWriter writer = new BufferedWriter(new FileWriter("output/toStringCompressLambda.txt"))) {
+                                                        writer.write(quadtree.toString());
+                                                } catch (IOException e) {
+                                                        e.printStackTrace();
+                                                }
+                                                //System.out.println(quadtree.toString());
+                                                System.out.println("Le nombre de noeud après compression Lambda : "+quadtreeCompressLambda.countNodes());
                                                 break;
 
                                         case 3: System.out.println("Entrer la valeur du pourcentage de compression Rho : ");
                                                 int percentage = scanner.nextInt();
-                                                Quadtree compressQuad = quadtree.compressRho(percentage);
-                                                compressQuad.toPGM("pgm_carres/testCompressRho.pgm");
-                                                System.out.println("Le nombre de noeud aprés compression RHo : "+compressQuad.countNodes());
+                                                quadtree.compressRho(percentage);
+                                                quadtree.toPGM("pgm_carres/testCompressRho.pgm");
+                                                System.out.println("Le nombre de noeud aprés compression RHo : "+quadtree.countNodes());
                                                 break;
 
                                         case 4: //System.out.println("Entrer le chemin de sortie du fichier PGM : ");

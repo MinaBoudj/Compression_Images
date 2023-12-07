@@ -6,6 +6,7 @@ public class QuadtreeNode {
     private QuadtreeNode fils3;
     private QuadtreeNode fils4;
     
+    //constructeur d'une feuille
     public QuadtreeNode(int valeur, boolean est_feuille){
         this.valeur = valeur;
         this.est_feuille = est_feuille;
@@ -15,6 +16,7 @@ public class QuadtreeNode {
         this.fils4 = null;
     }
 
+    //constructeur d'un noeud
     public QuadtreeNode(int valeur, boolean est_feuille, QuadtreeNode fils1, QuadtreeNode fils2, QuadtreeNode fils3, QuadtreeNode fils4){
         this.valeur = valeur;
         this.est_feuille = est_feuille;
