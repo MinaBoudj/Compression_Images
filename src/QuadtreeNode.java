@@ -75,6 +75,54 @@ public class QuadtreeNode {
             return false;
     }
 
+    //precondition node est une brindille
+    public double calculeEcartMax(){
+        double maxEcart = 0;
+        double Λ = moyenneLogarithmique();
+
+        for(int i=1; i<=4; i++){
+            double lambda_i = this.getFils(i).getValue();
+            double ecart = Math.abs(Λ-lambda_i);
+            maxEcart = Math.max(maxEcart, ecart);
+        }
+        return maxEcart;
+    }
+
+    //methode qui calcule la moyenne logarithmique 
+    public Double moyenneLogarithmique(){
+        //calculer la moyenne logarthmique de luminosite Λ
+        double SumLambda = 0.0;
+        for(int i=1; i<=4; i++){
+            double y_i = this.getFils(i).getValue();
+            SumLambda += Math.log(0.1 + y_i);
+        }
+        double Λ = Math.exp(0.25*SumLambda);
+        //int compressedValue = (int)Math.round(Λ);
+        //return compressedValue;
+        return Λ;
+    }
+
+    public int roundMoyenneLog( double Λ){
+        int compressedValue = (int)Math.round(Λ);
+        return compressedValue;
+    }
+
+    //compresser une brindille 
+    public void compressBrindille(EcartBrindille brindille){
+        if(brindille != null){
+            int Λ =  roundMoyenneLog(brindille.getNode().moyenneLogarithmique());
+            brindille.getNode().setValue(Λ);
+            brindille.getNode().setIsLeaf(true);
+            if(brindille.getPere().isBrindille()){
+                double upsilon = brindille.getPere().calculeEcartMax();
+                if(upsilon < brindille.getEcart()){
+                    brindille.getPere().setValue(brindille.getPere().roundMoyenneLog(moyenneLogarithmique()));
+                    brindille.getPere().setIsLeaf(true);
+                }
+            }
+        }
+    }
+
     //compter le nombre de noeud 
     public int countNodes(){
         if(this == null)

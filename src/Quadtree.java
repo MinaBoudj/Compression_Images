@@ -78,15 +78,6 @@ public class Quadtree{
     public void setSize(int size){ this.size = size; }
     public void setRacine(QuadtreeNode newracine){ this.racine = newracine; }
 
-    //affichage d'un noeud de l'arbre
-    public String toString(){
-        if(racine == null)
-            return"()";
-        else if(racine.isLeaf())
-            return "(" + racine.getValue() + ")";
-        else 
-            return "("+racine.getFils1().toString()+racine.getFils2().toString()+ racine.getFils4().toString() + racine.getFils3().toString()+")";
-    }
 
     //Methode qui génère à l'endroit path un fichier PGM qui correspond au Quadtree
     public void toPGM(String path) throws IOException { 
@@ -137,7 +128,7 @@ public class Quadtree{
     public void compressLambda(){ 
         if(!this.racine.isLeaf())
             if(this.racine.isBrindille()){
-                int compressedValue = mayenneLogarithmique(this.racine);
+                int compressedValue = this.racine.roundMoyenneLog(racine.moyenneLogarithmique());
                 this.setSize(1);
                 this.setRacine(new QuadtreeNode(compressedValue, true));
             }else{
@@ -156,7 +147,7 @@ public class Quadtree{
         if(node.isLeaf()){//une feuille
             return node;
         }else if(node.isBrindille()){ //une brindille donc on compresse
-                int compressedValue = mayenneLogarithmique(node);
+                int compressedValue = node.roundMoyenneLog(node.moyenneLogarithmique());
                 return new QuadtreeNode(compressedValue, true);
         }else{//un noeud interne
                 node.setFils1(compressRecLambda(node.getFils1()));
@@ -171,66 +162,40 @@ public class Quadtree{
             }
     }
 
-    //methode pour compresser une brindille
-    private int mayenneLogarithmique(QuadtreeNode node){
-        //calculer la moyenne logarthmique de luminosite Λ
-        double SumLambda = 0.0;
-        for(int i=1; i<=4; i++){
-            double y_i = node.getFils(i).getValue();
-            SumLambda += Math.log(0.1 + y_i);
-        }
-        double Λ = Math.exp(0.25*SumLambda);
-        int compressedValue = (int)Math.round(Λ);
-        return compressedValue;
-    }
-
-    //methode pour cloner un arbre 
-    public QuadtreeNode cloneTree(QuadtreeNode node){
-        if(node == null)
-            return null;
-        else if(node.isLeaf())
-            return new QuadtreeNode(node.getValue(), true);
-        else 
-            return new QuadtreeNode(0, false,
-            cloneTree(node.getFils1()), cloneTree(node.getFils2()),
-            cloneTree(node.getFils3()), cloneTree(node.getFils4()));
-    }
     
-
     public void compressRho(int rho) {
-    }
-
-    // Modifiez la méthode findBrindilles pour renvoyer une liste de BrindilleAvecEcart
-    private List<Double> findEcarts(QuadtreeNode node) {
-        List<Double> brindillesAvecEcarts = new ArrayList<>();
-        findEcartsRecursive(node, brindillesAvecEcarts);
-        return brindillesAvecEcarts;
-    }
-
-    private void findEcartsRecursive(QuadtreeNode node, List<Double> Ecarts) {
-        if (node != null && node.isBrindille()) {
-            double ecart = calculateCompressionImpcat(node);
-            Ecarts.add(ecart);
-        } else if (node != null && !node.isLeaf()) {
-            findEcartsRecursive(node.getFils1(), Ecarts);
-            findEcartsRecursive(node.getFils2(), Ecarts);
-            findEcartsRecursive(node.getFils3(), Ecarts);
-            findEcartsRecursive(node.getFils4(), Ecarts);
+        if(this.racine != null && !this.racine.isLeaf()){
+            ArrayList<EcartBrindille> liste = new ArrayList<>();
+            calculeEcarts(liste, null, this.racine);
+            int initialNodes = countNodes();
+            double tauxCompress = 1.0;
+            double p = (double)rho/100;
+            System.out.println(p+" "+ tauxCompress);
+            while (p < tauxCompress && liste.size() != 0){
+                this.racine.compressBrindille(liste.get(0));
+                liste.remove(0);
+                tauxCompress = (double)countNodes()/(double)initialNodes;
+            }
         }
     }
 
-    //precondition node est une brindille
-    private double calculateCompressionImpcat(QuadtreeNode node){
-        double maxEcart = Double.MIN_VALUE;
-        double Λ = mayenneLogarithmique(node);
-
-        for(int i=1; i<=4; i++){
-            double lambda_i = node.getFils(i).getValue();
-            double ecart = Math.abs(Λ-lambda_i);
-            maxEcart = Math.max(maxEcart, ecart);
-        }
-        return maxEcart;
+    public void calculeEcarts(ArrayList<EcartBrindille> liste, QuadtreeNode pere, QuadtreeNode noeud){
+        if(noeud != null)
+            if(noeud.isBrindille()){
+                double upsilon = noeud.calculeEcartMax();
+                if(liste.size() != 0 && upsilon < liste.get(0).getEcart()) //ajouter au debut
+                    liste.add(0, new EcartBrindille(upsilon, noeud, pere));
+                else    
+                    liste.add(new EcartBrindille(upsilon, noeud, pere));
+            }else{
+                calculeEcarts(liste, noeud, noeud.getFils1());
+                calculeEcarts(liste, noeud, noeud.getFils2());
+                calculeEcarts(liste, noeud, noeud.getFils3());
+                calculeEcarts(liste, noeud, noeud.getFils4());
+            }
     }
+
+    
 
     //Calculer le nombre de noeud du quadtree
     public int countNodes(){
@@ -248,6 +213,27 @@ public class Quadtree{
             }
     }
 
+    //methode pour cloner un arbre 
+    public QuadtreeNode cloneTree(QuadtreeNode node){
+        if(node == null)
+            return null;
+        else if(node.isLeaf())
+            return new QuadtreeNode(node.getValue(), true);
+        else 
+            return new QuadtreeNode(0, false,
+            cloneTree(node.getFils1()), cloneTree(node.getFils2()),
+            cloneTree(node.getFils3()), cloneTree(node.getFils4()));
+    }
+    
+    //affichage d'un noeud de l'arbre
+    public String toString(){
+        if(racine == null)
+            return"()";
+        else if(racine.isLeaf())
+            return "(" + racine.getValue() + ")";
+        else 
+            return "("+racine.getFils1().toString()+racine.getFils2().toString()+ racine.getFils4().toString() + racine.getFils3().toString()+")";
+    }
 
     
 }

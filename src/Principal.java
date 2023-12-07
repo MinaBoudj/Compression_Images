@@ -10,6 +10,7 @@ public class Principal{
                         String image = "test.pgm";
                         Quadtree quadtree = new Quadtree("pgm_carres/test.pgm");
                         Quadtree quadtreeCompressLambda = new Quadtree(quadtree.cloneTree(quadtree.getRacine()), quadtree.getSize(), quadtree.getLumMax());
+                        Quadtree quadtreeCompressRho = new Quadtree(quadtree.cloneTree(quadtree.getRacine()), quadtree.getSize(), quadtree.getLumMax());
                         System.out.println(" teste de la fonction toString !! ");
                         // Écriture dans le fichier texte
                         try (BufferedWriter writer = new BufferedWriter(new FileWriter("output/toString.txt"))) {
@@ -44,7 +45,7 @@ public class Principal{
                                                 quadtreeCompressLambda.toPGM("pgm_carres/testCompressLambda.pgm");
                                                 // Écriture dans le fichier texte
                                                 try (BufferedWriter writer = new BufferedWriter(new FileWriter("output/toStringCompressLambda.txt"))) {
-                                                        writer.write(quadtree.toString());
+                                                        writer.write(quadtreeCompressLambda.toString());
                                                 } catch (IOException e) {
                                                         e.printStackTrace();
                                                 }
@@ -54,9 +55,9 @@ public class Principal{
 
                                         case 3: System.out.println("Entrer la valeur du pourcentage de compression Rho : ");
                                                 int percentage = scanner.nextInt();
-                                                quadtree.compressRho(percentage);
-                                                quadtree.toPGM("pgm_carres/testCompressRho.pgm");
-                                                System.out.println("Le nombre de noeud aprés compression RHo : "+quadtree.countNodes());
+                                                quadtreeCompressRho.compressRho(percentage);
+                                                quadtreeCompressRho.toPGM("pgm_carres/testCompressRho.pgm");
+                                                System.out.println("Le nombre de noeud aprés compression RHo : "+quadtreeCompressRho.countNodes());
                                                 break;
 
                                         case 4: //System.out.println("Entrer le chemin de sortie du fichier PGM : ");
@@ -68,7 +69,7 @@ public class Principal{
                                                 System.out.println("----- Staistiques sur l'image "+ image +" -----");
                                                 System.out.println("Le nombre de noeud initiale : "+quadtree.countNodes());
                                                 System.out.println("Le nombre de noeud après compression Lambda : "+quadtreeCompressLambda.countNodes());
-                                                System.out.println("Le nombre de noeud après compression Rho : ");
+                                                System.out.println("Le nombre de noeud après compression Rho : "+quadtreeCompressRho.countNodes());
                                                 //le taux de compression réalisé
                                                 break;
                                         default : System.out.println("Vous avez QUITTER !");
