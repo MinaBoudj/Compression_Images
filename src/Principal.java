@@ -7,9 +7,9 @@ public class Principal{
         if(args.length == 0){
                 try{
                         //initialisation d'un objet Quadtree à partir d'un fichier PGM
-                        String image = "tree.pgm";
+                        String image = "JDD2.pgm";
                         int percentage = 0;
-                        Quadtree quadtree = new Quadtree("pgm_carres/tree.pgm");
+                        Quadtree quadtree = new Quadtree("pgm_carres/JDD2.pgm");
                         Quadtree quadtreeCompressLambda = new Quadtree(quadtree.cloneTree(quadtree.getRacine()), quadtree.getSize(), quadtree.getLumMax());
                         Quadtree quadtreeCompressRho = new Quadtree(quadtree.cloneTree(quadtree.getRacine()), quadtree.getSize(), quadtree.getLumMax());
                         System.out.println(" teste de la fonction toString !! ");

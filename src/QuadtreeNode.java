@@ -147,7 +147,7 @@ public class QuadtreeNode {
         else if(isBrindille())
                 return "(" + fils1.getValue() + " " + fils2.getValue() + " " + fils3.getValue() + " " + fils4.getValue()+ ")";
             else 
-                return fils1.toString() + fils2.toString() + fils3.toString() + fils4.toString();
+                return "(" + fils1.toString() + ")(" +  fils2.toString()+ ")(" + fils3.toString() + ")(" +fils4.toString() + ")";
     }
 
 

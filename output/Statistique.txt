@@ -13,4 +13,12 @@ Le nombre de noeud initiale : 336285
 Le nombre de noeud après compression Lambda : 85153
 pour rho = 95 ,le nombre de noeud après compression Rho :319469
 
+----- Staistiques sur l'image boat.pgm -----
+Le nombre de noeud initiale : 280709
+Le nombre de noeud après compression Lambda : 77549
+pour rho = 82 ,le nombre de noeud après compression Rho :230181
 
+----- Staistiques sur l'image test.pgm -----
+Le nombre de noeud initiale : 21
+Le nombre de noeud après compression Lambda : 5
+pour rho = 82 ,le nombre de noeud après compression Rho :17

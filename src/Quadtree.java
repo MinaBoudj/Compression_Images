@@ -32,8 +32,6 @@ public class Quadtree{
     public QuadtreeNode buildQuadtree(int[][] matrix, int debLigne, int finLigne, int debCol, int finCol){
         if(debLigne == finLigne && debCol == finCol)
             return new QuadtreeNode(matrix[debLigne][debCol], true);
-        //if(finLigne-debLigne == finCol-debCol && matrix[debLigne][debCol] == matrix[debLigne][debCol+1] && matrix[debLigne][debCol+1] == matrix[debLigne+1][debCol] && matrix[debLigne][debCol+1] == matrix[debLigne+1][debCol+1])
-            //return new QuadtreeNode(matrix[debLigne][debCol], true);
         
         int milieuLigne = (debLigne+finLigne)/2;
         int milieuCol = (debCol+finCol)/2;
@@ -61,7 +59,6 @@ public class Quadtree{
             this.max_lumi = Integer.parseInt(scanner.nextLine()); //liminosite max
             int[][] matrix = new int[size][size];
             for(int i = 0; i < size; i++){
-                //String[] line = scanner.nextLine().split((" "));
                 for(int j=0; j < size; j++){
                     matrix[i][j] = Integer.parseInt(scanner.next());
                 }
@@ -160,24 +157,24 @@ public class Quadtree{
             }
     }
 
-    
+    //methode qui effectue la compression rho avec un rho entrer en parmettre
     public void compressRho(int rho) {
         if(this.racine != null && !this.racine.isLeaf()){
             ArrayList<EcartBrindille> liste = new ArrayList<>();
-            //calculeEcarts(liste, null, this.racine);
+            calculeEcarts(liste, null, this.racine);
             int initialNodes = countNodes();
             double tauxCompress = 1.0;
             double p = (double)rho/100;
             while (p < tauxCompress && liste.size() != 0){
-                calculeEcarts(liste, null, this.racine);
                 this.racine.compressBrindille(liste.get(0));
                 liste.remove(0);
                 tauxCompress = (double)countNodes()/(double)initialNodes;
-                liste = new ArrayList<>();
+    
             }
         }
     }
 
+    //Methode qui calcule tous les ecarts de chaque brindilles de l'arbre 
     public void calculeEcarts(ArrayList<EcartBrindille> liste, QuadtreeNode pere, QuadtreeNode noeud){
         if(noeud != null)
             if(noeud.isBrindille()){
