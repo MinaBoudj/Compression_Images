@@ -1,0 +1,16 @@
+----- Staistiques sur l'image JDD2.pgm -----
+Le nombre de noeud initiale : 105
+Le nombre de noeud après compression Lambda : 5
+pour rho = 50 ,le nombre de noeud après compression Rho :49
+
+----- Staistiques sur l'image boat.pgm -----
+Le nombre de noeud initiale : 280709
+Le nombre de noeud après compression Lambda : 77549
+pour rho = 10 ,le nombre de noeud après compression Rho :70481
+
+----- Staistiques sur l'image tree.pgm -----
+Le nombre de noeud initiale : 336285
+Le nombre de noeud après compression Lambda : 85153
+pour rho = 95 ,le nombre de noeud après compression Rho :319469
+
+

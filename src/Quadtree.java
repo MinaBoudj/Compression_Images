@@ -129,10 +129,8 @@ public class Quadtree{
         if(!this.racine.isLeaf())
             if(this.racine.isBrindille()){
                 int compressedValue = this.racine.roundMoyenneLog(racine.moyenneLogarithmique());
-                this.setSize(1);
                 this.setRacine(new QuadtreeNode(compressedValue, true));
             }else{
-                setSize(size/2);
                 this.racine.setFils1(compressRecLambda(this.racine.getFils1()));
                 this.racine.setFils2(compressRecLambda(this.racine.getFils2()));
                 this.racine.setFils3(compressRecLambda(this.racine.getFils3()));
@@ -166,15 +164,16 @@ public class Quadtree{
     public void compressRho(int rho) {
         if(this.racine != null && !this.racine.isLeaf()){
             ArrayList<EcartBrindille> liste = new ArrayList<>();
-            calculeEcarts(liste, null, this.racine);
+            //calculeEcarts(liste, null, this.racine);
             int initialNodes = countNodes();
             double tauxCompress = 1.0;
             double p = (double)rho/100;
-            System.out.println(p+" "+ tauxCompress);
             while (p < tauxCompress && liste.size() != 0){
+                calculeEcarts(liste, null, this.racine);
                 this.racine.compressBrindille(liste.get(0));
                 liste.remove(0);
                 tauxCompress = (double)countNodes()/(double)initialNodes;
+                liste = new ArrayList<>();
             }
         }
     }
