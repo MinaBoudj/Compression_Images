@@ -22,3 +22,44 @@ pour rho = 82 ,le nombre de noeud après compression Rho :230181
 Le nombre de noeud initiale : 21
 Le nombre de noeud après compression Lambda : 5
 pour rho = 82 ,le nombre de noeud après compression Rho :17
+
+----- Staistiques sur l'image Spiral128.pgm -----
+Le nombre de noeud initiale : 2749
+Le nombre de noeud après compression Lambda : 1269
+pour rho = 25 ,le nombre de noeud après compression Rho :685
+taux de compression : 24.918152055292833
+
+----- Staistiques sur l'image Spiral128.pgm -----
+Le nombre de noeud initiale : 2749
+Le nombre de noeud après compression Lambda : 1269
+pour rho = 75 ,le nombre de noeud après compression Rho :2061
+taux de compression : 74.97271735176427
+
+----- Staistiques sur l'image altDegrade.pgm -----
+Le nombre de noeud initiale : 21845
+Le nombre de noeud après compression Lambda : 5461
+Le nombre de noeud après la deuxieme compression Lambda : 1365
+pour rho = 25 ,le nombre de noeud après compression Rho :5461
+taux de compression : 24.998855573357748
+
+----- Staistiques sur l'image altDegrade.pgm -----
+Le nombre de noeud initiale : 21845
+Le nombre de noeud après compression Lambda : 5461
+pour rho = 75 ,le nombre de noeud après compression Rho :16381
+taux de compression : 74.98741130693523
+
+
+----- Staistiques sur l'image altDegrade.pgm -----
+Le nombre de noeud initiale : 21845
+Le nombre de noeud après compression Lambda : 1365
+pour rho = 25 ,le nombre de noeud après compression Rho :5461
+taux de compression : 24.998855573357748
+
+
+
+----- Staistiques sur l'image Spiral128.pgm -----
+Le nombre de noeud initiale : 2749
+Le nombre de noeud après compression Lambda : 1269
+pour rho = 25 ,le nombre de noeud après compression Rho :549
+taux de compression : 24.918152055292833
+
